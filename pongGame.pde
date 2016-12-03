@@ -21,23 +21,35 @@ int xMove = width/2;
 boolean startX = true;
 int x;
 int textSize = 50;
+boolean largeText = true ; 
+boolean optionsMenu = true;
+boolean canGameBegin = false;
+PinkNoise noise;
 
 
 public void setup() {
   fullScreen();
   background(0);
-  startScreen();
+  optionsMenu();
+  if (!optionsMenu) {
+    startScreen();
+  }
   noStroke();
   paddleSound = new SoundFile(this, "p1.mp3");
   boundary = new SoundFile(this, "b.mp3");
   winningSound = new SoundFile(this, "g.mp3");
   Score = new SoundFile(this, "win.mp3");
+  noise = new PinkNoise(this);
 }
 
 public void draw() {
-  if (buttonPressed) {
+  if (gameOver) {
+    endGameScreen();
+  } else if (buttonPressed) {
     gamePlay();
+    if(buttonPressed){
     gameScreen();
+    }
     if (b.x<=22  && b.y>=blue.bpaddleypos && b.y<=blue.bpaddleypos+100 ) {
       //if ball touches blue paddle
       playerBlue = true;
@@ -51,10 +63,6 @@ public void draw() {
     fill(#7AFF00);
     text(playerGreenScore, width-300, 50);
 
-    if (gameOver) {
-      endGameScreen();
-    }
-
     if (playerGreenScore == winningScore ) {
       playSoundOnce = true;
       gameOver = true;
@@ -65,8 +73,28 @@ public void draw() {
   }
 }
 
-public void handleButtonEvents(GButton playersList, GEvent event) {
-  buttonPressed = true;
+public void handleButtonEvents(GButton button, GEvent event) {
+  if (button == singlePlayer && event == GEvent.CLICKED) {
+    optionsMenu = false;
+    hideOptionsMenu();
+    background(0);
+    startScreen();
+  }
+  if (button == twoPlayers && event == GEvent.CLICKED) {
+    optionsMenu = false;
+    background(0);
+    startScreen();
+    hideOptionsMenu();
+  }
+  if (button == twoAIs && event == GEvent.CLICKED) {
+    optionsMenu = false;
+    background(0);
+    startScreen();
+    hideOptionsMenu();
+  }
+  if(button == playersList && event == GEvent.CLICKED){
+    buttonPressed = true;
+  }
 }
 
 public void startScreen() {
@@ -113,11 +141,15 @@ public void endGame(String player) {
   b.ySpeed=0;
   fill(#FF0011);
   textSize(textSize);
-  textSize++;
-  if(textSize>=100){
-    textSize-=5;
-  }else if(textSize<=50){
+  if (largeText) { 
     textSize++;
+  } else { 
+    textSize--;
+  }
+  if (textSize>=100) {
+    largeText = false ;
+  } else if (textSize<=50) {
+    largeText = true ;
   }
   text("Game Over " + player, width/2-40, height/2 +40);
   textAlign(CENTER);
@@ -134,11 +166,19 @@ public void endGameScreen() {
   if (playerGreenScore == winningScore) {
     fill(0);
     endGame(whoIsPlayer2 + " Wins!");
-    winningSound.play();
+    if ( playSoundOnce) { 
+      noise.play();
+      //winningSound.play();
+    }
+    playSoundOnce = false;
   } else {
     fill(0);
     endGame(whoIsPlayer1 + " Wins!");
-    winningSound.play();
+    if ( playSoundOnce) { 
+      noise.play();
+      //winningSound.play();
+    }
+    playSoundOnce = false;
   }
 }
 
@@ -154,18 +194,33 @@ public void endGameBall() {
     x +=xMove;
     if (xMove>=350 && x<=width-350) {
       xMove=+5;
+      boundary.play();
     }
     if (x >= width-350) {
       xMove=-5;
+      boundary.play();
     }
     if (x<=350) {
       xMove=+5;
+      boundary.play();
     }
   }
 }
 
-public void optionsMenu(){
-  
+public void optionsMenu() {
+  Font font = new Font("DialogInput", Font.BOLD, 32);
+  singlePlayer = new GButton(this, width/3-250, height/2, 300, 100, "SINGLE PLAYER");
+  singlePlayer.setFont(font);
+  twoPlayers = new GButton(this, width/3*2-50, height/2, 300, 100, "MULTIPLAYER");
+  twoPlayers.setFont(font);
+  twoAIs = new GButton(this, width/2-150, height/2+150, 300, 100, "AI VS AI");
+  twoAIs.setFont(font);
+}
+
+public void hideOptionsMenu() {
+  singlePlayer.setVisible(false);
+  twoPlayers.setVisible(false);
+  twoAIs.setVisible(false);
 }
 
 public void AI() {
