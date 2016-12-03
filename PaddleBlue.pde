@@ -23,15 +23,11 @@ public class PaddleBlue {
 
   public void keyPressed() {
     if (key == 's') {
-      bpaddleypos+=10;
-      fill(#00CAFF);
-      rect(2, bpaddleypos, 20, 100);
+      bpaddleypos+=40;
       bstartpos=false;
 
     } else if (key == 'w') {
-      bpaddleypos-=10;
-      fill(#00CAFF);
-      rect(2, bpaddleypos, 20, 100);
+      bpaddleypos-=40;
           bstartpos=false;
 
     }

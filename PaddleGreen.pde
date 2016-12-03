@@ -20,14 +20,10 @@ public class PaddleGreen {
 
   public void keyPressed() {
     if (key == 'k') {
-      fill(#7AFF00);
-      rect(width-22, gpaddleypos, 20, 100);
-      gpaddleypos+=10;
+      gpaddleypos+=40;
       gstartpos=false;
     } else if (key == 'i') {
-      fill(#7AFF00);
-      rect(width-22, gpaddleypos, 20, 100);
-      gpaddleypos-=10;
+      gpaddleypos-=40;
       gstartpos=false;
     }
   }
