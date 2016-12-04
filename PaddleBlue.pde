@@ -1,35 +1,13 @@
-public class PaddleBlue {
-  int bpaddleypos ;
-  
-  boolean bstartpos=true;
-  
-  public void draw() {
-    if (bstartpos){
-      bpaddleypos = height/2;
-    }
-     
-    fill(#00CAFF);
-    
-    rect(2, bpaddleypos, 20, 100);
+public class PaddleBlue extends Paddle {
 
-    if (this.bpaddleypos >height-100) {
-      this.bpaddleypos = height-100;
-    }
-    if (this.bpaddleypos< 50) {
-      this.bpaddleypos = 50;
-    }
+  public PaddleBlue() {
+    this.paddleColor = #00CAFF;
+    this.xPos = 2;
+    this.upKey = 'w';
+    this.downKey = 's';
   }
 
-
-  public void keyPressed() {
-    if (key == 's') {
-      bpaddleypos+=40;
-      bstartpos=false;
-
-    } else if (key == 'w') {
-      bpaddleypos-=40;
-          bstartpos=false;
-
-    }
+  public boolean ballTouchesPaddle(Ball b) { 
+    return b.x<=22  && b.y>=this.yPos && b.y<=this.yPos+100;
   }
 }

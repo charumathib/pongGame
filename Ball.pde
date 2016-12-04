@@ -4,12 +4,10 @@ public class Ball {
   float xSpeed = 5;
   float ySpeed = 5;
   boolean startpos =true;
-  //import processing.sound.*;
-  //SoundFile paddleSound, Score;
-  
-  public void setup() {
-    //pongGame.paddleSound;
-  }
+  float speedX = 1 ;
+  float speedY = 1 ;
+  int m = millis();
+
   public void draw() {
     fill(255);
     if (startpos) {
@@ -17,9 +15,18 @@ public class Ball {
       x = width/2;
       y = random(height);
     }
+    //if (millis() - m >= 10000) { 
+    //  m = millis();
+    //  speedX+=5;
+    //  speedY+=5;
+    //}
     ellipse(x, y, 30, 30);
-    x+=xSpeed;
-    y+=ySpeed;
+
+    //speedX = ( xSpeed > 0) ? speedX : -speedX ;
+    x+=xSpeed ;
+    
+    //speedY = ( ySpeed > 0) ? speedY : -speedY ;    
+    y+=ySpeed ;
 
     startpos = false;
     if (y>=height && x>width/2 && x<width ) {
