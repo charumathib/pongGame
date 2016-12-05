@@ -10,17 +10,14 @@ GTextField player1, player2;
 
 boolean buttonPressed, playerBlue, playerGreen, playSoundOnce, gameOver, canGameBegin, startX, largeText, optionsMenu;
 
-int playerBlueScore = 0;
-int playerGreenScore = 0;
-int winningScore = 10;
-int xMove = width/2;
-int x;
-int textSize = 50;
+int playerBlueScore, playerGreenScore, winningScore, xMove, x, textSize;
 
 String whoIsPlayer1;
 String whoIsPlayer2;
 
 SoundFile paddleSound, Score, boundary, winningSound;
+
+PImage img, img1, img2, img3;
 
 
 public void setup() {
@@ -28,9 +25,11 @@ public void setup() {
   resetGame();
 
   paddleSound = new SoundFile(this, "p1.mp3");
-  boundary = new SoundFile(this, "b.mp3");
+  boundary = new SoundFile(this, "meh.mp3");
   winningSound = new SoundFile(this, "hotlineBling.mp3");
   Score = new SoundFile(this, "win.mp3");
+  img =loadImage("kewlGif.gif");
+  
 
   noStroke();
 }
@@ -39,13 +38,16 @@ public void draw() {
   if (gameOver) {
     endGameScreen();
   } else if (buttonPressed) {
+
+
+
     gamePlay();
     if (buttonPressed) {
       gameScreen();
     }
 
-    playerBlue = blue.ballTouchesPaddle(b);
-    playerGreen = green.ballTouchesPaddle(b);
+    playerBlue = blue.ballTouchesPaddle(b) ? true : playerBlue ;
+    playerGreen = green.ballTouchesPaddle(b) ? true : playerGreen ;
 
     printScores();
 
@@ -97,6 +99,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
 }
 
 public void startScreen() {
+  background(0);
   Font font = new Font("DialogInput", Font.BOLD, 32);
   beginGame = new GButton(this, width/2-width/8, height/2-height/8, width/4, height/4, "BEGIN GAME" );
   beginGame.setFont(font);
@@ -157,11 +160,12 @@ public void endGame(String player) {
 
 public void endGameScreen() {
   background(0);
-  endGameBall();
-  fill(#00CAFF);
-  rect(0, 0, 100, height);
-  fill(#7AFF00);
-  rect(width-100, 0, 100, height);
+  floatingEmojis();
+  //endGameBall();
+  //fill(#00CAFF);
+  //rect(0, 0, 100, height);
+  //fill(#7AFF00);
+  //rect(width-100, 0, 100, height);
   textAlign(CENTER);
   if (playerGreenScore == winningScore) {
     fill(0);
@@ -180,27 +184,34 @@ public void endGameScreen() {
   }
 }
 
-public void endGameBall() {
-  fill(255); 
-  if (startX) {
-    x = width/2;
-    xMove = 5;
-    startX = false;
-  }
-  if (!startX) {
-    ellipse(x, height/2, 500, 500);
-    x +=xMove;
-    if (xMove>=350 && x<=width-350) {
-      xMove=+5;
-    }
-    if (x >= width-350) {
-      xMove=-5;
-    }
-    if (x<=350) {
-      xMove=+5;
-    }
-  }
+public void floatingEmojis(){
+  image(img, 100, 100,width-100, height-100);
+  
 }
+
+
+
+//public void endGameBall() {
+//  fill(255); 
+//  if (startX) {
+//    x = width/2;
+//    xMove = 5;
+//    startX = false;
+//  }
+//  if (!startX) {
+//    ellipse(x, height/2, 500, 500);
+//    x +=xMove;
+//    if (xMove>=350 && x<=width-350) {
+//      xMove=+5;
+//    }
+//    if (x >= width-350) {
+//      xMove=-5;
+//    }
+//    if (x<=350) {
+//      xMove=+5;
+//    }
+//  }
+//}
 
 public void optionsMenu() {
   Font font = new Font("DialogInput", Font.BOLD, 32);
@@ -229,7 +240,8 @@ public void keyPressed() {
 
 public void resetGame() {
   background(0);
-  resetBooleans();
+  setBooleans();
+  setIntegers();
 
   b = new Ball();
   optionsMenu();
@@ -238,7 +250,7 @@ public void resetGame() {
   }
 }
 
-public void resetBooleans() {
+public void setBooleans() {
   buttonPressed = false;
   playerBlue = false;
   playerGreen = false;
@@ -249,4 +261,13 @@ public void resetBooleans() {
   largeText = true ; 
   optionsMenu = true;
   startX = true;
+}
+
+public void setIntegers() {
+  playerBlueScore = 0;
+  playerGreenScore = 0;
+  winningScore = 1;
+  xMove = width/2;
+  x = 0;
+  textSize = 50;
 }

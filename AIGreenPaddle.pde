@@ -1,6 +1,6 @@
 class AIGreenPaddle extends PaddleGreen { 
 
   public void keyPressed(Ball b) { 
-    logic(b, this);
+    ai_logic(b, this);
   }
 }

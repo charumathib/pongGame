@@ -8,14 +8,18 @@ public abstract class Paddle {
   int  xPos;
 
   char upKey, downKey;
+  
+  boolean ballTouchesPaddle ; 
 
   public void draw() {
+    noStroke();
     if (startpos) {
       yPos = height/2;
     }
 
     fill(paddleColor);
 
+    rectMode(CORNER);
     rect(xPos, yPos, 20, 100);
 
     if (this.yPos >height-100) {
@@ -38,7 +42,7 @@ public abstract class Paddle {
   }
 
   // Automatic logic to track the movement of the paddle with the ball
-  public void logic(Ball b, Paddle p) { 
+  public void ai_logic(Ball b, Paddle p) { 
     if ( abs(b.x - p.xPos) <= width/2) { 
       if ( b.y <= (p.yPos ) ) { 
         p.yPos-=40;
@@ -49,8 +53,6 @@ public abstract class Paddle {
       }
     }
   }
-  
-  public abstract boolean ballTouchesPaddle(Ball b) ;
-  
 
+  public abstract boolean ballTouchesPaddle(Ball b) ;
 }
